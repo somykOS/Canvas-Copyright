@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "net.somyk.canvascopyright.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "CanvasEntityMixin",
+    "CanvasItemMixin",
+    "CloneCanvasCraftingRecipeMixin",
+    "CrafterBlockMixin",
+    "CraftingScreenHandlerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}

@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"id": "canvas-copyright",
+	"version": "${version}",
+	"name": "Canvas Copyright",
+	"description": "",
+	"authors": [
+		"somyk"
+	],
+	"contact": {
+		"sources": "https://github.com/somykOS/Canvas-Copyright"
+	},
+	"license": "CC-BY-NC-SA-4.0",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.somyk.canvascopyright.CanvasCopyright"
+		]
+	},
+	"mixins": [
+		"canvascopyright.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.2",
+		"minecraft": ">=1.21",
+		"java": ">=21",
+		"fabric-api": "*",
+		"polydecorations": ">=0.4.2"
+	}
+}
