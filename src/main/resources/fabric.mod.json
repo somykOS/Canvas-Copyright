@@ -26,5 +26,6 @@
 		"java": ">=21",
 		"fabric-api": "*",
 		"polydecorations": ">=0.4.2"
-	}
+	},
+	"icon": "assets/canvas-copyright/icon.png"
 }
