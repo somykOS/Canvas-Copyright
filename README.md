@@ -23,7 +23,7 @@ To manage these permission, you can use [LuckPerms](https://modrinth.com/mod/luc
 
 ---
 You can visit my little [contact card](https://somykos.github.io/web/), <br>
-And are welcome to support me via the following links:<br>
+And you are welcome to support me via the following links:<br>
 <a href="https://ko-fi.com/somyk">
 <img src="https://raw.githubusercontent.com/somykOS/web/c03742bd86ca2ce0f6f39bcd3cfe683ad98926a2/public/external/kofi_s_logo_nolabel.svg" alt="ko-fi" width="100"/>
 </a>
