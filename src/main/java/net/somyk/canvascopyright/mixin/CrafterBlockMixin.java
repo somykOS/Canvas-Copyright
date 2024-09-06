@@ -2,6 +2,7 @@ package net.somyk.canvascopyright.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import eu.pb4.polydecorations.item.CanvasItem;
 import eu.pb4.polydecorations.item.DecorationsItems;
 import net.minecraft.block.CrafterBlock;
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,6 @@ public class CrafterBlockMixin {
 
     @WrapOperation(method = "craft", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z"))
     private boolean craft(ItemStack instance, Operation<Boolean> original){
-        return original.call(instance) || instance.isOf(DecorationsItems.CANVAS);
+        return original.call(instance) || (instance.isOf(DecorationsItems.CANVAS) && instance.contains(CanvasItem.DATA_TYPE));
     }
 }

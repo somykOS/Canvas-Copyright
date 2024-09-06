@@ -1,6 +1,7 @@
 package net.somyk.canvascopyright.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import eu.pb4.polydecorations.item.CanvasItem;
 import eu.pb4.polydecorations.item.DecorationsItems;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingResultInventory;
@@ -23,7 +24,7 @@ public class CraftingScreenHandlerMixin {
     @ModifyExpressionValue(method = "updateResult", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/recipe/CraftingRecipe;craft(Lnet/minecraft/recipe/input/RecipeInput;Lnet/minecraft/registry/RegistryWrapper$WrapperLookup;)Lnet/minecraft/item/ItemStack;"))
     private static ItemStack playerCanCopyCheck(ItemStack original, ScreenHandler handler, World world, PlayerEntity player, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory, @Nullable RecipeEntry<CraftingRecipe> recipe){
-        if(original.isOf(DecorationsItems.CANVAS)) {
+        if(original.isOf(DecorationsItems.CANVAS) && original.contains(CanvasItem.DATA_TYPE)) {
             if(!AuthorMethods.canCopy(original, player)) return ItemStack.EMPTY;
         }
         return original;
