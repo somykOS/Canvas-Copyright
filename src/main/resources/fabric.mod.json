@@ -25,7 +25,7 @@
 		"minecraft": ">=1.21",
 		"java": ">=21",
 		"fabric-api": "*",
-		"polydecorations": ">=0.4.2"
+		"polydecorations": ">=0.4.4"
 	},
 	"icon": "assets/canvas-copyright/icon.png"
 }

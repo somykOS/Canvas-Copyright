@@ -14,6 +14,6 @@ public class CrafterBlockMixin {
 
     @WrapOperation(method = "craft", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z"))
     private boolean craft(ItemStack instance, Operation<Boolean> original){
-        return original.call(instance) || (instance.isOf(DecorationsItems.CANVAS) && instance.contains(CanvasItem.DATA_TYPE));
+        return original.call(instance) || (instance.isOf(DecorationsItems.CANVAS) && instance.getOrDefault(CanvasItem.DATA_TYPE, CanvasItem.Data.DEFAULT).image().isPresent());
     }
 }

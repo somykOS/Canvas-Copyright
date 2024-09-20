@@ -24,7 +24,7 @@ public class CraftingScreenHandlerMixin {
     @ModifyExpressionValue(method = "updateResult", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/recipe/CraftingRecipe;craft(Lnet/minecraft/recipe/input/RecipeInput;Lnet/minecraft/registry/RegistryWrapper$WrapperLookup;)Lnet/minecraft/item/ItemStack;"))
     private static ItemStack playerCanCopyCheck(ItemStack original, ScreenHandler handler, World world, PlayerEntity player, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory, @Nullable RecipeEntry<CraftingRecipe> recipe){
-        if(original.isOf(DecorationsItems.CANVAS) && original.contains(CanvasItem.DATA_TYPE)) {
+        if(original.isOf(DecorationsItems.CANVAS) && original.getOrDefault(CanvasItem.DATA_TYPE, CanvasItem.Data.DEFAULT).image().isPresent()) {
             if(!AuthorMethods.canCopy(original, player)) return ItemStack.EMPTY;
         }
         return original;

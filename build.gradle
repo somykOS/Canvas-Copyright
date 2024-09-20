@@ -42,10 +42,10 @@ dependencies {
 	modImplementation ("eu.pb4:polymer-virtual-entity:${polymer}")
 	modImplementation ("eu.pb4:common-protection-api:1.0.0")
 	modImplementation ("eu.pb4:sgui:1.6.0+1.21")
-	modImplementation ("eu.pb4:map-canvas-api:0.4.1+1.21")
-	modImplementation ("eu.pb4:factorytools:0.3.1+1.21")
+	modImplementation ("eu.pb4:map-canvas-api:0.4.2+1.21.1")
+	modImplementation ("eu.pb4:factorytools:0.3.2+1.21")
 
-	modImplementation ("maven.modrinth:polydecorations:0.4.2+1.21")
+	modImplementation ("maven.modrinth:polydecorations:${polydecorations}")
 
 	include modImplementation ("me.lucko:fabric-permissions-api:0.3.1")
 	include implementation ("com.github.Carleslc.Simple-YAML:Simple-Yaml:1.8.4")

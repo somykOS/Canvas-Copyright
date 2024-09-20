@@ -16,7 +16,7 @@ import java.util.List;
 @Mixin(CanvasItem.class)
 public class CanvasItemMixin {
 
-    @Inject(method = "method_7851", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getOrDefault(Lnet/minecraft/component/ComponentType;Ljava/lang/Object;)Ljava/lang/Object;",
+    @Inject(method = "appendTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getOrDefault(Lnet/minecraft/component/ComponentType;Ljava/lang/Object;)Ljava/lang/Object;",
             ordinal = 1, shift = At.Shift.AFTER))
     public void addAuthor(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo ci){
         AuthorMethods.addToolTip(stack, tooltip);
