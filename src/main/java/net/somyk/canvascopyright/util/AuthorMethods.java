@@ -44,13 +44,21 @@ public class AuthorMethods {
     public static boolean modifyAuthorNBT(ItemStack itemStack, String playerName, int operation) {
         NbtCompound tag = itemStack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
         NbtList authors = tag.getList(AUTHORS_KEY, NbtElement.STRING_TYPE);
-        NbtString author = NbtString.of(playerName);
+
+        int index = -1;
+        for (int i = 0; i < authors.size(); i++) {
+            if (authors.getString(i).equalsIgnoreCase(playerName)) {
+                index = i;
+                break;
+            }
+        }
 
         boolean modified = false;
-        if (operation == 1 && !authors.contains(author)) {
-            authors.add(author);
+        if (operation == 1 && index == -1) {
+            authors.add(NbtString.of(playerName));
             modified = true;
-        } else if (operation == 0 && authors.remove(author)) {
+        } else if (operation == 0 && index != -1) {
+            authors.remove(index);
             modified = true;
         }
 

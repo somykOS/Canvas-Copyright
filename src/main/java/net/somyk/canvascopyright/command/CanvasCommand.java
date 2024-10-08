@@ -22,9 +22,9 @@ import static net.somyk.canvascopyright.CanvasCopyright.MOD_ID;
 import static net.somyk.canvascopyright.util.AuthorMethods.*;
 
 public class CanvasCommand {
-    private static final Style STYLE_SUCCESS = Style.EMPTY.withColor(Formatting.DARK_GREEN);
-    private static final Style STYLE_FAIL = Style.EMPTY.withColor(Formatting.DARK_RED);
-    private static final Pattern VALID_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9]+$");
+    //private static final Style STYLE_SUCCESS = Style.EMPTY.withColor(Formatting.DARK_GREEN);
+    private static final Style STYLE_FAIL = Style.EMPTY.withColor(Formatting.RED);
+    private static final Pattern VALID_NAME_PATTERN = Pattern.compile("^[a-z0-9_]{3,}$", Pattern.CASE_INSENSITIVE);
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
         LiteralCommandNode<ServerCommandSource> canvasNode = CommandManager.literal("canvas").build();
@@ -72,7 +72,7 @@ public class CanvasCommand {
         }
 
         if (!VALID_NAME_PATTERN.matcher(playerName).matches()) {
-            sendFeedback(context, "Player name should not have any special character", STYLE_FAIL);
+            sendFeedback(context, "Player name must be at least 3 characters long and contain no special symbols", STYLE_FAIL);
             return -1;
         }
 
@@ -84,8 +84,8 @@ public class CanvasCommand {
         }
 
 
-        String message = playerName + " successfully " + (isAdding ? "added to " : "removed from ") + "canvas authors";
-        sendFeedback(context, message, STYLE_SUCCESS);
+        String message = "§6" + playerName + "§a successfully " + (isAdding ? "added to " : "removed from ") + "canvas authors";
+        sendFeedback(context, message, Style.EMPTY);
 
         return 1;
     }
