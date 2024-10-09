@@ -19,6 +19,7 @@ import static net.somyk.canvascopyright.util.ModConfig.getBooleanValue;
 
 public class AuthorMethods {
     public static final String AUTHORS_KEY = "authors";
+    public static final String PUBLIC_KEY = "public";
     private static final Style TOOLTIP_STYLE = Style.EMPTY.withColor(Formatting.GRAY).withItalic(false);
     private static final int MAX_AUTHORS_DISPLAYED = 5;
 
@@ -35,23 +36,27 @@ public class AuthorMethods {
     }
 
     public static boolean canCopy(ItemStack itemStack, PlayerEntity playerEntity) {
-        if (!getBooleanValue("disableCopy")) {
-            return true;
-        }
+        if (!getBooleanValue("disableCopy")) return true;
+
+        NbtCompound tag = getCustomData(itemStack);
+        if (tag.getString(PUBLIC_KEY).equals("true")) return true;
+
         return getBooleanValue("authorsCanCopy") && isAuthor(itemStack, playerEntity);
     }
 
+    public static boolean freeCopy(ItemStack itemStack) {
+        NbtCompound tag = getCustomData(itemStack);
+        if(tag.contains(PUBLIC_KEY)) return false;
+        tag.putString(PUBLIC_KEY, "true");
+        itemStack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(tag));
+        return true;
+    }
+
     public static boolean modifyAuthorNBT(ItemStack itemStack, String playerName, int operation) {
-        NbtCompound tag = itemStack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
+        NbtCompound tag = getCustomData(itemStack);
         NbtList authors = tag.getList(AUTHORS_KEY, NbtElement.STRING_TYPE);
 
-        int index = -1;
-        for (int i = 0; i < authors.size(); i++) {
-            if (authors.getString(i).equalsIgnoreCase(playerName)) {
-                index = i;
-                break;
-            }
-        }
+        int index = findAuthorIndex(authors, playerName);
 
         boolean modified = false;
         if (operation == 1 && index == -1) {
@@ -63,37 +68,35 @@ public class AuthorMethods {
         }
 
         if (modified) {
-            if (authors.isEmpty()) {
-                tag.remove(AUTHORS_KEY);
-            } else {
-                tag.put(AUTHORS_KEY, authors);
-            }
-            itemStack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(tag));
+            updateAuthorsTag(itemStack, tag, authors);
         }
 
         return modified;
     }
 
     public static void addToolTip(ItemStack itemStack, List<Text> tooltip) {
-        if (!getBooleanValue("displayAuthorsLore")) {
-            return;
-        }
+        if (!getBooleanValue("displayAuthorsLore")) return;
 
         getAuthors(itemStack).ifPresent(authors -> {
             if (!authors.isEmpty()) {
                 addAuthorsToTooltip(authors, tooltip);
             }
         });
+
+        NbtCompound tag = getCustomData(itemStack);
+        if (tag.getString(PUBLIC_KEY).equals("true")) {
+            tooltip.add(Text.translatable("item.canvas-copyright.tooltip.public").setStyle(Style.EMPTY.withColor(Formatting.DARK_GRAY)));
+        }
+        tooltip.add(Text.empty());
     }
 
     private static Optional<NbtList> getAuthors(ItemStack itemStack) {
-        NbtCompound tag = itemStack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
+        NbtCompound tag = getCustomData(itemStack);
         return Optional.ofNullable(tag.getList(AUTHORS_KEY, NbtElement.STRING_TYPE));
     }
 
     private static void addAuthorsToTooltip(NbtList authors, List<Text> tooltip) {
-        String firstAuthor = authors.getString(0);
-        tooltip.add(Text.translatable("book.byAuthor", firstAuthor + (authors.size() > 1 ? "," : "")).setStyle(TOOLTIP_STYLE));
+        tooltip.add(Text.translatable("book.byAuthor", authors.getString(0) + (authors.size() > 1 ? "," : "")).setStyle(TOOLTIP_STYLE));
 
         for (int i = 1; i < Math.min(authors.size(), MAX_AUTHORS_DISPLAYED); i += 2) {
             StringBuilder line = new StringBuilder(authors.getString(i));
@@ -108,7 +111,27 @@ public class AuthorMethods {
             }
             tooltip.add(Text.literal(line.toString()).setStyle(TOOLTIP_STYLE));
         }
+    }
 
-        tooltip.add(Text.empty());
+    public static NbtCompound getCustomData(ItemStack itemStack) {
+        return itemStack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
+    }
+
+    private static int findAuthorIndex(NbtList authors, String playerName) {
+        for (int i = 0; i < authors.size(); i++) {
+            if (authors.getString(i).equalsIgnoreCase(playerName)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private static void updateAuthorsTag(ItemStack itemStack, NbtCompound tag, NbtList authors) {
+        if (authors.isEmpty()) {
+            tag.remove(AUTHORS_KEY);
+        } else {
+            tag.put(AUTHORS_KEY, authors);
+        }
+        itemStack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(tag));
     }
 }

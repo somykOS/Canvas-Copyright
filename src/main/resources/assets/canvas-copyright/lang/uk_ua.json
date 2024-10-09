@@ -1,0 +1,15 @@
+{
+  "command.canvas.error.not_allowed": "Вам не дозволено змінювати цю мапу",
+  "command.canvas.error.invalid_name": "Ім'я гравця повинно мати довжину не менше 3 символів і не містити спеціальних символів",
+  "command.canvas.error.author_exists": "Автор вже вписаний",
+  "command.canvas.error.author_not_found": "Такого автора не знайдено",
+  "command.canvas.error.no_canvas": "Ви повинні мати полотно в основній руці",
+  "command.canvas.error.already_public": "Вже належить суспільному надбанню",
+  "command.canvas.error.free_copy": "Нахуя?… Полотна можна вільно копіювати",
+
+  "command.canvas.success.author_added": "%s успішно додано до авторів полотна",
+  "command.canvas.success.author_removed": "%s успішно видалено з авторів полотна",
+  "command.canvas.success.allow_copy": "Успішно передано в суспільне надбання",
+
+  "item.canvas-copyright.tooltip.public": "Суспільне надбання"
+}

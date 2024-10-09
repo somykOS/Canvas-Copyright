@@ -1,5 +1,6 @@
 package net.somyk.canvascopyright;
 
+import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -17,5 +18,11 @@ public class CanvasCopyright implements ModInitializer {
 	public void onInitialize() {
 		ModConfig.registerConfigs();
 		CommandRegistrationCallback.EVENT.register(CanvasCommand::register);
+
+		if (PolymerResourcePackUtils.addModAssets(MOD_ID)) {
+			LOGGER.info("[{}]: successfully added mod assets.", MOD_ID);
+		} else {
+			LOGGER.error("[{}]: failed to add mod assets.", MOD_ID);
+		}
 	}
 }

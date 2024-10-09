@@ -1,0 +1,15 @@
+{
+  "command.canvas.error.not_allowed": "You're not allowed to modify this map",
+  "command.canvas.error.invalid_name": "Player name must be at least 3 characters long and contain no special symbols",
+  "command.canvas.error.author_exists": "There is already the author",
+  "command.canvas.error.author_not_found": "This author is not found",
+  "command.canvas.error.no_canvas": "You should have canvas in main hand",
+  "command.canvas.error.already_public": "Already public domain",
+  "command.canvas.error.free_copy": "Why?… Canvases are free to copy",
+
+  "command.canvas.success.author_added": "%s successfully added to canvas authors",
+  "command.canvas.success.author_removed": "%s successfully removed from canvas authors",
+  "command.canvas.success.allow_copy": "Successfully transferred to the public domain",
+
+  "item.canvas-copyright.tooltip.public": "Public domain"
+}
