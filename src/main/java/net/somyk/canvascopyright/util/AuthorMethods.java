@@ -15,13 +15,12 @@ import net.minecraft.util.Formatting;
 import java.util.List;
 import java.util.Optional;
 
-import static net.somyk.canvascopyright.util.ModConfig.getBooleanValue;
+import static net.somyk.canvascopyright.util.ModConfig.*;
 
 public class AuthorMethods {
     public static final String AUTHORS_KEY = "authors";
     public static final String PUBLIC_KEY = "public";
     private static final Style TOOLTIP_STYLE = Style.EMPTY.withColor(Formatting.GRAY).withItalic(false);
-    private static final int MAX_AUTHORS_DISPLAYED = 5;
 
     public static boolean isAuthor(ItemStack itemStack, PlayerEntity playerEntity) {
         return getAuthors(itemStack)
@@ -36,12 +35,12 @@ public class AuthorMethods {
     }
 
     public static boolean canCopy(ItemStack itemStack, PlayerEntity playerEntity) {
-        if (!getBooleanValue("disableCopy")) return true;
+        if (!getBooleanValue(disableCopy)) return true;
 
         NbtCompound tag = getCustomData(itemStack);
         if (tag.getString(PUBLIC_KEY).equals("true")) return true;
 
-        return getBooleanValue("authorsCanCopy") && isAuthor(itemStack, playerEntity);
+        return getBooleanValue(authorsCopy) && isAuthor(itemStack, playerEntity);
     }
 
     public static boolean freeCopy(ItemStack itemStack) {
@@ -75,7 +74,7 @@ public class AuthorMethods {
     }
 
     public static void addToolTip(ItemStack itemStack, List<Text> tooltip) {
-        if (!getBooleanValue("displayAuthorsLore")) return;
+        if (!getBooleanValue(displayLore)) return;
 
         getAuthors(itemStack).ifPresent(authors -> {
             if (!authors.isEmpty()) {
@@ -96,19 +95,21 @@ public class AuthorMethods {
     }
 
     private static void addAuthorsToTooltip(NbtList authors, List<Text> tooltip) {
-        tooltip.add(Text.translatable("book.byAuthor", authors.getString(0) + (authors.size() > 1 ? "," : "")).setStyle(TOOLTIP_STYLE));
+        int maxPlayers = getIntValue(maxPlayerLore);
+        int authorCount = Math.min(authors.size(), maxPlayers);
 
-        for (int i = 1; i < Math.min(authors.size(), MAX_AUTHORS_DISPLAYED); i += 2) {
-            StringBuilder line = new StringBuilder(authors.getString(i));
-            if (i + 1 < authors.size()) {
+        tooltip.add(Text.translatable("book.byAuthor", authors.getString(0) + (authorCount > 1 ? "," : "")).setStyle(TOOLTIP_STYLE));
+        StringBuilder line;
+
+        for (int i = 1; i < authorCount; i += 2) {
+            line = new StringBuilder(authors.getString(i));
+
+            if (i + 1 < authorCount && i + 1 < authors.size()) {
                 line.append(", ").append(authors.getString(i + 1));
-                if (i + 2 < authors.size() && i + 2 < MAX_AUTHORS_DISPLAYED) {
-                    line.append(",");
-                }
-            }
-            if (i + 2 == MAX_AUTHORS_DISPLAYED && i + 2 < authors.size()) {
-                line.append("...");
-            }
+                if (i + 2 < authorCount && i + 2 < authors.size()) line.append(",");
+                else if (i + 2 >= authorCount && i + 2 < authors.size()) line.append("...");
+            } else if (i + 1 >= authorCount && i + 1 < authors.size()) line.append("...");
+
             tooltip.add(Text.literal(line.toString()).setStyle(TOOLTIP_STYLE));
         }
     }

@@ -15,13 +15,14 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.somyk.canvascopyright.util.ModConfig;
 
 import java.util.regex.Pattern;
 
 import static net.minecraft.server.command.CommandManager.RegistrationEnvironment;
 import static net.somyk.canvascopyright.CanvasCopyright.MOD_ID;
 import static net.somyk.canvascopyright.util.AuthorMethods.*;
-import static net.somyk.canvascopyright.util.ModConfig.getBooleanValue;
+import static net.somyk.canvascopyright.util.ModConfig.*;
 
 public class CanvasCommand {
     private static final Style STYLE_FAIL = Style.EMPTY.withColor(Formatting.RED);
@@ -36,17 +37,18 @@ public class CanvasCommand {
                         .then(CommandManager.argument("player", StringArgumentType.greedyString())
                                 .executes(context -> modifyCanvas(context, StringArgumentType.getString(context, "player"), false))))
                 .then(CommandManager.literal("to-public")
-                        .executes(CanvasCommand::open))
+                        .requires(source -> ModConfig.getBooleanValue(publicDomain) && ModConfig.getBooleanValue(disableCopy))
+                        .executes(CanvasCommand::publicDomain))
                 .build();
 
         dispatcher.getRoot().addChild(canvasNode);
     }
 
-    private static int open(CommandContext<ServerCommandSource> context) {
+    private static int publicDomain(CommandContext<ServerCommandSource> context) {
         return executeWithPlayerAndCanvas(context, (player, itemStack) -> {
-            if (!getBooleanValue("disableCopy")) {
-                return sendFeedback(context, "command.canvas.error.free_copy", STYLE_FAIL);
-            }
+//            if (!getBooleanValue(disableCopy)) {
+//                return sendFeedback(context, "command.canvas.error.free_copy", STYLE_FAIL);
+//            }
             if (!isMainAuthor(itemStack, player)) {
                 return sendFeedback(context, "command.canvas.error.not_allowed", STYLE_FAIL);
             }

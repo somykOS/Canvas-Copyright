@@ -15,6 +15,12 @@ public class ModConfig {
     private static final Path configDir = FabricLoader.getInstance().getConfigDir();
     private static final Path configFilePath = configDir.resolve(CONFIG);
 
+    public static final String displayLore = "displayAuthorsLore";
+    public static final String maxPlayerLore = "maxPlayersInLore";
+    public static final String disableCopy = "disableCopy";
+    public static final String authorsCopy = "authorsCanCopy";
+    public static final String publicDomain = "publicDomainFeature";
+
     public static void registerConfigs() {
         final YamlFile config = new YamlFile(configFilePath.toFile().getAbsolutePath());
         try {
@@ -30,12 +36,15 @@ public class ModConfig {
         }
 
         config.addDefault("displayAuthorsLore", true);
+        config.addDefault("maxPlayersInLore", 3);
         config.addDefault("disableCopy", true);
         config.addDefault("authorsCanCopy", true);
+        config.addDefault("publicDomainFeature", true);
 
         config.setCommentFormat(YamlCommentFormat.PRETTY);
-        config.setComment("displayAuthorsLore", "Up to 5 players can be displayed in a lore");
         config.setComment("disableCopy", "Nobody can make a copy of a canvas (except authors if 'authorsCanCopy' is 'true')");
+        config.setComment("publicDomainFeature", "Main author can transfer a canvas to the public domain (all players can copy the canvas).\n" +
+                "Doesn't work if `disableCopy` is `false`");
 
         try {
             config.save();
@@ -44,7 +53,7 @@ public class ModConfig {
         }
     }
 
-    public static boolean getBooleanValue(String key){
+    public static boolean getBooleanValue(String key) {
         final YamlFile config = new YamlFile((configFilePath.toFile()).getAbsolutePath());
         try {
             config.loadWithComments();
@@ -53,6 +62,17 @@ public class ModConfig {
         }
 
         return config.getBoolean(key);
+    }
+
+    public static int getIntValue(String key) {
+        final YamlFile config = new YamlFile((configFilePath.toFile()).getAbsolutePath());
+        try {
+            config.loadWithComments();
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return config.getInt(key);
     }
 
     public static String getStringValue(String key) {
