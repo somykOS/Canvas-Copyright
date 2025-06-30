@@ -10,7 +10,7 @@
 	"contact": {
 		"sources": "https://github.com/somykOS/Canvas-Copyright"
 	},
-	"license": "CC-BY-NC-SA-4.0",
+	"license": "MPL 2.0",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
