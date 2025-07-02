@@ -21,7 +21,7 @@ publicDomainFeature: true
 ```
 
 To use `/canvas add <player>` or `/canvas remove <player>` you need to be main author (the first who modified canvas) or have the `canvas-copyright.add-author`, `canvas-copyright.remove-author` permissions. <br>
-Also you can allow anybody to copy your canvas with `/canvas to-public` command. After transferring canvas to public domain it can also be crafted by crafter.
+Also you can allow anybody to copy your canvas with `/canvas change-accessibility` command. After transferring canvas to public domain it can also be crafted by crafter. You can use the command again to remove your canvas from public domain.
 
 This mod uses [fabric-permission-api](https://github.com/lucko/fabric-permissions-api/). <br>
 To manage these permission, you can use [LuckPerms](https://modrinth.com/mod/luckperms) or any other mod that can be used in this way. <br>

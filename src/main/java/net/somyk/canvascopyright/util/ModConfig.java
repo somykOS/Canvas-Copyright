@@ -26,9 +26,9 @@ public class ModConfig {
         try {
             if (!config.exists()) {
                 config.createNewFile();
-                LOGGER.info("[{}]: config has been created: {}", MOD_ID, configFilePath.toFile().getPath());
+                LOGGER.info("Config has been created: {}", configFilePath.toFile().getPath());
             } else {
-                LOGGER.info("[{}]: loading configurations..", MOD_ID);
+                LOGGER.info("Loading configurations..");
             }
             config.loadWithComments();
         } catch (final Exception e) {

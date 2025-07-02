@@ -20,9 +20,9 @@ public class CanvasCopyright implements ModInitializer {
 		CommandRegistrationCallback.EVENT.register(CanvasCommand::register);
 
 		if (PolymerResourcePackUtils.addModAssets(MOD_ID)) {
-			LOGGER.info("[{}]: successfully added mod assets.", MOD_ID);
+			LOGGER.info("Successfully added mod assets.");
 		} else {
-			LOGGER.error("[{}]: failed to add mod assets.", MOD_ID);
+			LOGGER.error("Failed to add mod assets.");
 		}
 	}
 }

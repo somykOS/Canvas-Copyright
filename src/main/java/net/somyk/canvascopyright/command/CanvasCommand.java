@@ -10,22 +10,24 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.CommandManager.RegistrationEnvironment;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.somyk.canvascopyright.util.AuthorMethods;
 import net.somyk.canvascopyright.util.ModConfig;
 
 import java.util.regex.Pattern;
 
-import static net.minecraft.server.command.CommandManager.RegistrationEnvironment;
 import static net.somyk.canvascopyright.CanvasCopyright.MOD_ID;
 import static net.somyk.canvascopyright.util.AuthorMethods.*;
 import static net.somyk.canvascopyright.util.ModConfig.*;
 
 public class CanvasCommand {
     private static final Style STYLE_FAIL = Style.EMPTY.withColor(Formatting.RED);
+    private static final Style STYLE_SUCCESS = Style.EMPTY.withColor(Formatting.GREEN);
     private static final Pattern VALID_NAME_PATTERN = Pattern.compile("^[a-z0-9_]{3,}$", Pattern.CASE_INSENSITIVE);
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
@@ -36,26 +38,23 @@ public class CanvasCommand {
                 .then(CommandManager.literal("remove")
                         .then(CommandManager.argument("player", StringArgumentType.greedyString())
                                 .executes(context -> modifyCanvas(context, StringArgumentType.getString(context, "player"), false))))
-                .then(CommandManager.literal("to-public")
+                .then(CommandManager.literal("change-accessibility")
                         .requires(source -> ModConfig.getBooleanValue(publicDomain) && ModConfig.getBooleanValue(disableCopy))
-                        .executes(CanvasCommand::publicDomain))
+                        .executes(CanvasCommand::changeAccessibility))
                 .build();
 
         dispatcher.getRoot().addChild(canvasNode);
     }
 
-    private static int publicDomain(CommandContext<ServerCommandSource> context) {
+    private static int changeAccessibility(CommandContext<ServerCommandSource> context) {
         return executeWithPlayerAndCanvas(context, (player, itemStack) -> {
-//            if (!getBooleanValue(disableCopy)) {
-//                return sendFeedback(context, "command.canvas.error.free_copy", STYLE_FAIL);
-//            }
             if (!isMainAuthor(itemStack, player)) {
                 return sendFeedback(context, "command.canvas.error.not_allowed", STYLE_FAIL);
             }
-            if (freeCopy(itemStack)) {
-                return sendFeedback(context, "command.canvas.success.allow_copy", Style.EMPTY.withColor(Formatting.GREEN));
+            if (AuthorMethods.changeAccessibility(itemStack)) {
+                return sendFeedback(context, "command.canvas.success.public_domain", STYLE_SUCCESS);
             } else {
-                return sendFeedback(context, "command.canvas.error.already_public", STYLE_FAIL);
+                return sendFeedback(context, "command.canvas.success.private", STYLE_SUCCESS);
             }
         });
     }
