@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.10-SNAPSHOT'
+	id 'fabric-loom' version '1.11-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -41,13 +41,13 @@ dependencies {
 	modImplementation ("eu.pb4:polymer-autohost:${polymer}")
 	modImplementation ("eu.pb4:polymer-virtual-entity:${polymer}")
 	modImplementation ("eu.pb4:common-protection-api:1.0.0")
-	modImplementation ("eu.pb4:sgui:1.10.0+1.21.6")
-	modImplementation ("eu.pb4:map-canvas-api:0.5.0+1.21.3")
-	modImplementation ("eu.pb4:factorytools:0.7.0+1.21.6")
+    modImplementation ("eu.pb4:sgui:${sgui}")
+    modImplementation ("eu.pb4:map-canvas-api:${mapcanvasapi}")
+    modImplementation ("eu.pb4:factorytools:${factorytools}")
 
 	modImplementation ("maven.modrinth:polydecorations:${polydecorations}")
 
-	include modImplementation ("me.lucko:fabric-permissions-api:0.4.0")
+	include modImplementation ("me.lucko:fabric-permissions-api:0.5.0")
 	include implementation ("com.github.Carleslc.Simple-YAML:Simple-Yaml:1.8.4")
 }
 

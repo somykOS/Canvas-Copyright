@@ -2,6 +2,7 @@ package net.somyk.canvascopyright.mixin;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.UnboundedMapCodec;
+import eu.pb4.mapcanvas.api.utils.VirtualDisplay;
 import eu.pb4.polydecorations.entity.CanvasEntity;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
@@ -34,7 +35,7 @@ public class CanvasEntityMixin {
 	@Unique	private boolean open = false;
 
 	@Inject(method = "onUsed", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;swingHand(Lnet/minecraft/util/Hand;Z)V", shift = At.Shift.AFTER))
-	private void onUsed(ServerPlayerEntity serverPlayerEntity, ClickType clickType, int x, int y, CallbackInfo ci) {
+	private void onUsed(ServerPlayerEntity serverPlayerEntity, VirtualDisplay.ClickType clickType, int x, int y, CallbackInfo ci) {
 		NbtString playerName = NbtString.of(serverPlayerEntity.getName().getString());
 		if(!authors.contains(playerName)) authors.add(playerName);
 	}
